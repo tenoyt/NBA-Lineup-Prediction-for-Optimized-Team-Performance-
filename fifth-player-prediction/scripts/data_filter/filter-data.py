@@ -1,47 +1,43 @@
 import pandas as pd
 import os
 
+# Directory where CSV files are located
+data_folder = r"C:\Users\Tenoy\Desktop\d"
 
-def filter_csv(file_name):
-    """
-    Filters the specified columns from a CSV file and saves the result.
+# List of CSV file names
+csv_files = [
+    "matchups-2007.csv",
+    "matchups-2008.csv",
+    "matchups-2009.csv",
+    "matchups-2010.csv",
+    "matchups-2011.csv",
+    "matchups-2012.csv"
+    "matchups-2013.csv",
+    "matchups-2014.csv",
+    "matchups-2015.csv"
+]
 
-    :param file_name: Name of the input CSV file (assumed to be in the specified directory)
-    """
-    selected_columns = [
-        "game", "season", "home_team", "away_team", "starting_min",
-        "home_0", "home_1", "home_2", "home_3", "home_4",
-        "away_0", "away_1", "away_2", "away_3", "away_4", "outcome"
-    ]
+# Columns to keep
+selected_columns = [
+    "game", "season", "home_team", "away_team", "starting_min",
+    "home_0", "home_1", "home_2", "home_3", "home_4",
+    "away_0", "away_1", "away_2", "away_3", "away_4", "outcome"
+]
 
-    # Construct file paths
-    directory = "G:\Other computers\My Laptop\ONTARIO TECH\Machine Learning\NBA-Lineup-Prediction-for-Optimized-Team-Performance-\fifth-player-prediction\data"
-    file_path = os.path.join(directory, file_name)
-    output_path = os.path.join(directory, f"filtered_{file_name}")
-
-    # Check if the file exists
-    if not os.path.exists(file_path):
-        print(f"Error: The file '{file_path}' does not exist.")
-        return
-
+# Process each file
+for file_name in csv_files:
+    file_path = os.path.join(data_folder, file_name)
     try:
         # Load the CSV file
         df = pd.read_csv(file_path)
 
-        # Select the required columns
+        # Filter the desired columns
         filtered_df = df[selected_columns]
 
         # Save the filtered data to a new CSV file
-        filtered_df.to_csv(output_path, index=False)
+        output_file = os.path.join(data_folder, f"filtered_{file_name}")
+        filtered_df.to_csv(output_file, index=False)
 
-        # Display the first few rows
-        print("Filtered data saved successfully.")
-        print(filtered_df.head())
+        print(f"Filtered data saved to: {output_file}")
     except Exception as e:
-        print(f"An error occurred: {e}")
-
-
-# Example usage
-if __name__ == "__main__":
-    file_name = input("Enter the CSV file name: ")
-    filter_csv(file_name)
+        print(f"Failed to process {file_name}: {e}")
